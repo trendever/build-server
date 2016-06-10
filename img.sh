@@ -13,9 +13,9 @@ REPO="git@github.com:trendever/${SERVICE}.git"
 
 # docker registry
 REGISTRY="dev.trendever.com:5000"
-SERVICES="$wd/services.conf"
+SERVICES="$WD/services.conf"
 # docker compose dir
-COMPOSE="$wd/live-services"
+COMPOSE="$WD/live-services"
 
 # clone everything to service/
 git clone -b "${BRANCH}" "${REPO}" 'service'
@@ -39,7 +39,7 @@ docker tag "$RES" "$REGISTRY/$RES"
 docker push "$REGISTRY/$RES"
 
 # deploy it
-for machine in $(cat "$SERVICES" | grep "^$BRANCH " | cut -d' ' -f2); do
+for machine in $(cat "$SERVICES" | grep "^$RES " | cut -d' ' -f2-); do
 	eval $(docker-machine env "$machine")
 	# check if configuration applied
 	if [[ "$(docker-machine active)" != "$machine" ]]; then
