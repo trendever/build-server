@@ -8,28 +8,18 @@
 SERVICE="$1"
 BRANCH="$2"
 
-# path to service repository
-REPO="git@github.com:trendever/${SERVICE}.git"
-
 # docker registry
 REGISTRY="dev.trendever.com:5000"
-SERVICES="$WD/services.conf"
+SERVICES="$WD/branches.conf"
 # docker compose dir
-COMPOSE="$WD/live-services"
 
-# clone everything to service/
-git clone -b "${BRANCH}" "${REPO}" 'service'
+docker run --rm -v "$PWD/services":/project -u $(id -u) desertbit/golang-gb:alpine /bin/sh -c "cd src/$SERVICE && gb build"
 
-# temporary disable tests
-# docker run --rm -v "$PWD/service":/usr/src/service -w /usr/src/service -u $(id -u) desertbit/golang-gb:alpine sh -c 'gb build all && gb test -v'
-docker run --rm -v "$PWD/service":/usr/src/service -w /usr/src/service -u $(id -u) desertbit/golang-gb:alpine sh -c 'gb build all'
-
-# delete some really unneeded stuff
-rm -rf ./service/.git
-# delete code files, static libraries, dot-hidden files
-find ./service -type f -and -\( -name '*.go' -or -name '*.a' -or -name '.*' -\) -delete
-# delete empty dirs
-find ./service -type d -empty -delete
+mkdir 'container'
+cp "services/bin/$SERVICE" 'container/service'
+if [ -f "services/scripts/start-$SERVICE.sh" ]; then
+	cp services/scripts/start-$SERVICE.sh container/start.sh
+fi
 
 # build && push output container
 cp "$WD/Dockerfile" .
@@ -39,7 +29,10 @@ docker tag "$RES" "$REGISTRY/$RES"
 docker push "$REGISTRY/$RES"
 
 # deploy it
-for machine in $(cat "$SERVICES" | grep "^$RES " | cut -d' ' -f2-); do
+cat "$SERVICES" | grep -P "^$RES[ \t]" | while read machine_info; do
+	machine=$(echo "$machine_info" | awk '{print $2}')
+	compose=$(echo "$machine_info" | awk '{print $3}')
+
 	eval $(docker-machine env "$machine")
 	# check if configuration applied
 	if [[ "$(docker-machine active)" != "$machine" ]]; then
@@ -47,7 +40,8 @@ for machine in $(cat "$SERVICES" | grep "^$RES " | cut -d' ' -f2-); do
 		echo "Could not connect to $machine"
 		exit 1
 	fi
-	cd ~/live-services
+	cd "$WD"
+	cd "$compose"
 	docker pull "$REGISTRY/$RES"
 	docker-compose up -d "$SERVICE"
 done

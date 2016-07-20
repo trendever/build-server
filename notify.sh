@@ -3,6 +3,9 @@
 # public-accessible artifacts directory
 PUBLIC="dev.trendever.com/artifacts"
 
+# path to service repository
+REPO="git@github.com:trendever/services.git" 
+
 # script working directory
 export WD="$(dirname $(readlink -f "$0"))"
 
@@ -21,16 +24,37 @@ ln -s $OUT "$ART/$1-latest"
 tmp=$(mktemp -d)
 cd "$tmp"
 
-bash -ex "$WD/img.sh" "$1" "$2" &> "$OUT/log.txt"
+if ! git clone -b "$2" "$REPO" 'services'; then
+	echo "Fetch git repo failed"
+fi
 
-if [[ $? -eq 0 ]]
-then
-	echo "Build $2_$1: #success"
-else 
-	echo "Build $2_$1: #fail"
-	tail -n 8 "$OUT/log.txt"
-	echo "Full log: $PUBLIC/$(basename $OUT)/log.txt"
-fi 
+if [ "$1" != "services" ]; then
+	need_rebuild="$1"
+else
+	need_rebuild=$(bash "$WD/services.sh")
+fi
+
+echo "Services that need rebuild: "
+if [ -n "${need_rebuild}" ]; then
+	echo "$need_rebuild"
+else
+	echo 'none'
+fi
+
+for service in $need_rebuild; do
+	bash -ex "$WD/img.sh" "$service" "$2" &> "$OUT/log.txt"
+
+	if [[ $? -eq 0 ]]
+	then
+		echo "Build $2_$service: #success"
+		echo "Full log: $PUBLIC/$(basename $OUT)/log.txt"
+	else 
+		echo "Build $2_$service: #fail"
+		tail -n 8 "$OUT/log.txt"
+		echo "Full log: $PUBLIC/$(basename $OUT)/log.txt"
+	fi 
+done
+
 
 cd $wd
 rm -rf "$tmp"
