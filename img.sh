@@ -21,8 +21,13 @@ rm -rf 'container'
 mkdir 'container'
 
 cp "services/bin/$SERVICE" 'container/service'
+
 if [ -f "services/scripts/start-$SERVICE.sh" ]; then
 	cp services/scripts/start-$SERVICE.sh container/start.sh
+fi
+
+if [ -f "services/scripts/deploy/$SERVICE.sh" ]; then
+	(cd services; sh ./scripts/deploy/$SERVICE.sh ./../container)
 fi
 
 # build && push output container
@@ -47,5 +52,6 @@ cat "$SERVICES" | grep -P "^$RES[ \t]" | while read machine_info; do
 	cd "$WD"
 	cd "$compose"
 	docker pull "$REGISTRY/$RES"
-	docker-compose up -d "$SERVICE"
+
+	docker-compose up -d --force-recreate "$SERVICE"
 done

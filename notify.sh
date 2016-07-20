@@ -26,6 +26,7 @@ cd "$tmp"
 
 if ! git clone -b "$2" "$REPO" 'services'; then
 	echo "Fetch git repo failed"
+	exit 1
 fi
 
 if [ "$1" != "services" ]; then
@@ -51,7 +52,7 @@ for service in $need_rebuild; do
 	else 
 		echo "Build $2_$service: #fail"
 		echo "==="
-		tail -n 8 "$OUT/log.txt"
+		tail -n 8 "$OUT/log-$service.txt"
 		echo "==="
 		echo "Full log: $PUBLIC/$(basename $OUT)/log-$service.txt"
 	fi 

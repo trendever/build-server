@@ -14,5 +14,7 @@ RUN mkdir /var/persistent && chown -R service:service /project /var/persistent
 CMD ["su-exec", "service:service", "/bin/sh", "-c", "\
       cd /project; \
       if ! test -f MIGRATED; then  ./service migrate;  touch MIGRATED ; fi; \
-      if test -f start.sh; then exec sh ./start.sh; else exec ./service start; fi; \
+      export WEB_ROOT=$PWD; \
+      export GOPATH=$PWD/vendor; \
+      exec ./service start; \
     "]
