@@ -8,6 +8,8 @@
 SERVICE="$1"
 BRANCH="$2"
 
+echo "Starting build $BRANCH_$SERVICE"
+
 # docker registry
 REGISTRY="dev.trendever.com:5000"
 SERVICES="$WD/branches.conf"
@@ -15,7 +17,9 @@ SERVICES="$WD/branches.conf"
 
 docker run --rm -v "$PWD/services":/project -u $(id -u) desertbit/golang-gb:alpine /bin/sh -c "cd src/$SERVICE && gb build"
 
+rm -rf 'container'
 mkdir 'container'
+
 cp "services/bin/$SERVICE" 'container/service'
 if [ -f "services/scripts/start-$SERVICE.sh" ]; then
 	cp services/scripts/start-$SERVICE.sh container/start.sh

@@ -42,16 +42,18 @@ else
 fi
 
 for service in $need_rebuild; do
-	bash -ex "$WD/img.sh" "$service" "$2" &> "$OUT/log.txt"
+	bash -ex "$WD/img.sh" "$service" "$2" &> "$OUT/log-$service.txt"
 
 	if [[ $? -eq 0 ]]
 	then
 		echo "Build $2_$service: #success"
-		echo "Full log: $PUBLIC/$(basename $OUT)/log.txt"
+		echo "Full log: $PUBLIC/$(basename $OUT)/log-$service.txt"
 	else 
 		echo "Build $2_$service: #fail"
+		echo "==="
 		tail -n 8 "$OUT/log.txt"
-		echo "Full log: $PUBLIC/$(basename $OUT)/log.txt"
+		echo "==="
+		echo "Full log: $PUBLIC/$(basename $OUT)/log-$service.txt"
 	fi 
 done
 

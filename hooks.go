@@ -58,7 +58,6 @@ func main() {
 func handleEv(e hookserve.Event) {
 	res, err := run(e.Repo, e.Branch)
 	log.Println(res, err)
-	send(res)
 }
 
 func send(msg string) {
