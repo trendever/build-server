@@ -2,8 +2,7 @@
 
 cd services
 
-changed=$(git show --name-only --oneline | tail -n +2 | sed -e 's|^src/||;s|^vendor/src/||'| sed -e 's|/[^/]\+\.[^/]\+$|/|' | sed -e 's|/$||' | sort | uniq)
-
+changed=$(git show --name-only --oneline | tail -n +2 | | grep -e ^src -e ^vendor | sed -e 's|^src/||;s|^vendor/src/||'| sed -e 's|/[^/]\+\.[^/]\+$|/|' | sed -e 's|/$||' | sort | uniq)
 
 list=$(docker run --rm -v "$PWD":/usr/src/services -w "/usr/src/services/" -u $(id -u) desertbit/golang-gb:alpine sh -c "gb list -f '{{.ImportPath}} {{.Package.Imports}}'")
 
