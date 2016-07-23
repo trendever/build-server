@@ -15,6 +15,6 @@ CMD ["su-exec", "service:service", "/bin/sh", "-c", "\
       cd /project; \
       if ! test -f MIGRATED; then  ./service migrate;  touch MIGRATED ; fi; \
       export WEB_ROOT=$PWD; \
-      export GOPATH=$PWD/vendor; \
+      export GOPATH=$PWD:$PWD/vendor; \
       exec ./service start; \
     "]
