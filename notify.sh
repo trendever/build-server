@@ -3,9 +3,6 @@
 # public-accessible artifacts directory
 PUBLIC="dev.trendever.com/artifacts"
 
-# path to service repository
-REPO="git@github.com:trendever/services.git" 
-
 # script working directory
 export WD="$(dirname $(readlink -f "$0"))"
 
@@ -13,6 +10,7 @@ export WD="$(dirname $(readlink -f "$0"))"
 export ART="$WD/../artifacts"
 
 export OUT="$ART/$1-$(date +"%Y%m%d-%H%M")"
+export MESSAGES="$OUT/messages"
 export LANG=C
 
 mkdir -p "$OUT"
@@ -24,39 +22,27 @@ ln -s $OUT "$ART/$1-latest"
 tmp=$(mktemp -d)
 cd "$tmp"
 
-if ! git clone -b "$2" "$REPO" 'services'; then
-	echo "Fetch git repo failed"
-	exit 1
+service="$(basename $2)"
+script=services #default script
+
+if [ -x "$WD/target/$service.sh" ]; then
+	script="$service"
 fi
 
-if [ "$1" != "services" ]; then
-	need_rebuild="$1"
-else
-	need_rebuild=$(bash "$WD/services.sh")
-fi
-
-echo "Services that need rebuild: "
-if [ -n "${need_rebuild}" ]; then
-	echo "$need_rebuild"
-else
-	echo 'none'
-fi
-
-for service in $need_rebuild; do
-	bash -ex "$WD/img.sh" "$service" "$2" &> "$OUT/log-$service.txt"
-
-	if [[ $? -eq 0 ]]
-	then
-		echo "Build $2_$service: #success"
-		echo "Full log: $PUBLIC/$(basename $OUT)/log-$service.txt"
-	else 
-		echo "Build $2_$service: #fail"
-		echo "==="
-		tail -n 8 "$OUT/log-$service.txt"
-		echo "==="
-		echo "Full log: $PUBLIC/$(basename $OUT)/log-$service.txt"
-	fi 
-done
+bash -ex "$WD/target/$script.sh" "$@" &> "$OUT/log-$service.txt"
+if [[ $? -eq 0 ]]
+then
+	echo "$1 $3_$service: #success"
+	cat "$MESSAGES"
+	echo "Full log: $PUBLIC/$(basename $OUT)/log-$service.txt"
+else 
+	echo "$1 $3_$service: #fail"
+	cat "$MESSAGES"
+	echo "==="
+	tail -n 8 "$OUT/log-$service.txt"
+	echo "==="
+	echo "Full log: $PUBLIC/$(basename $OUT)/log-$service.txt"
+fi 
 
 
 cd $wd

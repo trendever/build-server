@@ -1,2 +1,4 @@
+/hooks
+/lasts
 branches.conf
-hooks
+services.conf

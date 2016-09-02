@@ -55,31 +55,40 @@ func main() {
 
 }
 
+// handle webhook event
 func handleEv(e hookserve.Event) {
-	res, err := run(e.Repo, e.Branch)
+	res, err := run("build", e.Repo, e.Branch)
 	log.Println(res, err)
 }
 
+// send message
 func send(msg string) {
 	bot.SendMessage(chat, msg, nil)
 }
 
-func run(repo, branch string) (string, error) {
-	send(fmt.Sprintf("Build %v_%v started", branch, repo))
-	out, err := exec.Command("/bin/bash", "./notify.sh", repo, branch).Output()
+// do the stuff
+func run(args... string) (string, error) {
+	// notify about starting build
+	send(fmt.Sprintf("Task %v started #bashlapshaforever", args))
+	// run cmd
+	launch := append([]string{"./notify.sh"}, args...)
+	out, err := exec.Command("/bin/bash", launch...).Output()
+	// handle error
 	if err != nil {
 		send(fmt.Sprintf("Error! %v", err))
 		return "", err
 	}
 
+	//error
 	send("Result:\n" + string(out))
 	return string(out), nil
 }
 
 func handleTelemsg(msg telebot.Message) {
-	if !msg.IsPersonal() && strings.HasPrefix(msg.Text, "/build") {
-		if tok := strings.Fields(msg.Text); len(tok) == 3 {
-			run(tok[1], tok[2])
+	if !msg.IsPersonal() && (strings.HasPrefix(msg.Text, "/build ") || strings.HasPrefix(msg.Text, "/deploy ")) {
+		if tok := strings.Fields(msg.Text); len(tok) >= 1 {
+			args := append([]string{tok[0][1:]}, tok[1:]...)
+			run(args...)
 		}
 	}
 }
