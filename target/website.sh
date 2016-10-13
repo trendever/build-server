@@ -9,16 +9,16 @@ case "$2 $3" in
 	"website master")
 		WHERE=$HOME/trendever_website_release
 		FROM=build
-		TO=live@trendever.com:~/public
+		TO=live@trendever.com:/home/live/public
 		;;
-	"soso_test ")
-		WHERE=$HOME/soso_test/dist
+	"soso_test master")
+		WHERE=$HOME/soso_test
 		FROM=dist
 		TO=$HOME/publicdir/soso_test
 		;;
 	*)
-		echo "unknown config"
-		exit 1
+		echo "Warning! Unknown branch -- ignoring" >> "$MESSAGES"
+		exit 0
 		;;
 esac
 
@@ -26,4 +26,4 @@ cd $WHERE
 git pull
 npm install # do we need it?
 npm run build
-rsync -av $FROM/ $TO/
+rsync -av --delete-delay $FROM/ $TO/

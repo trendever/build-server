@@ -24,7 +24,7 @@ else
 	if [ "$COMMAND" == 'deploy' ]; then
 		need_rebuild=$(cat $WD/services.conf | tr -d '^')
 	else
-		need_rebuild="$(bash -x "$WD/services.sh")"
+		need_rebuild="$(bash "$WD/services.sh")"
 	fi
 fi
 

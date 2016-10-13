@@ -9,6 +9,8 @@ RUN addgroup service && \
 
 COPY ./container /project
 
+RUN if [ -f /project/onbuild.sh ]; then sh -ex /project/onbuild.sh; fi
+
 RUN mkdir /var/persistent && chown -R service:service /project /var/persistent
 
 CMD ["su-exec", "service:service", "/bin/sh", "-c", "\

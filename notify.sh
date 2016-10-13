@@ -9,7 +9,7 @@ export WD="$(dirname $(readlink -f "$0"))"
 # artifacts (output) directory)
 export ART="$WD/../artifacts"
 
-export OUT="$ART/$1-$(date +"%Y%m%d-%H%M")"
+export OUT="$ART/$1-$(date +"%Y%m%d-%H%M-%N")"
 export MESSAGES="$OUT/messages"
 export LANG=C
 
@@ -39,7 +39,7 @@ else
 	echo "$1 $3_$service: #fail"
 	cat "$MESSAGES"
 	echo "==="
-	tail -n 8 "$OUT/log-$service.txt"
+	tail -n 9 "$OUT/log-$service.txt" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" # strip color codes
 	echo "==="
 	echo "Full log: $PUBLIC/$(basename $OUT)/log-$service.txt"
 fi 
