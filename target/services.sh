@@ -13,7 +13,7 @@ COMMAND="$1"
 SERVICE="$2"
 BRANCH="$3"
 
-if ! git clone -b "$BRANCH" "$REPO" 'services'; then
+if ! git clone --recursive -b "$BRANCH" "$REPO" 'services'; then
 	echo "Fetch git repo failed"
 	exit 1
 fi
