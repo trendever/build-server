@@ -3,13 +3,23 @@
 case "$2 $3" in
 	"website dev")
 		WHERE=$HOME/trendever_website
-		FROM=build
+		FROM=dist
 		TO=$HOME/publicdir/website
 		;;
 	"website master")
-		WHERE=$HOME/trendever_website_release
-		FROM=build
+		WHERE=$HOME/trendever_master
+		FROM=dist
 		TO=live@trendever.com:/home/live/public
+		;;
+	"website directbot")
+		WHERE=$HOME/dev_directbot
+		FROM=dist
+		TO=$HOME/publicdir/directbot
+		;;
+	"website directbotprod")
+		WHERE=$HOME/directbot_master
+		FROM=dist
+		TO=live@trendever.com:/home/live/directbot_public
 		;;
 	"soso_test master")
 		WHERE=$HOME/soso_test
