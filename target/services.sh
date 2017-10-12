@@ -28,7 +28,7 @@ else
 	fi
 fi
 
-echo -n "Services that need rebuild: " >> "$MESSAGES"
+echo "Services that need rebuild: " >> "$MESSAGES"
 if [ -n "${need_rebuild}" ]; then
 	echo "$need_rebuild" >> "$MESSAGES"
 else
