@@ -21,6 +21,11 @@ case "$2 $3" in
 		FROM=dist
 		TO=live@trendever.com:/home/live/directbot_public
 		;;
+	"website trusty")
+		WHERE=$HOME/trusty_dev
+		FROM=build/dist
+		TO=$HOME/publicdir/trusty_dev
+		;;
 	"soso_test master")
 		WHERE=$HOME/soso_test
 		FROM=dist
