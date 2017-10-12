@@ -5,9 +5,12 @@ cd services
 head=$(git rev-parse HEAD)
 branch=$(basename $(git rev-parse --abbrev-ref HEAD))
 
-from=HEAD~1
-if [ -f "$WD/lasts/${branch}" ]; then
+if [ -n "$1" ]; then
+	from=$1
+elif [ -f "$WD/lasts/${branch}" ]; then
 	from=$(cat "$WD/lasts/${branch}")
+else
+	from=HEAD~1
 fi
 
 changed=$(git diff --name-only $from -- | grep -e ^src -e ^vendor | grep '.go$' | sed -e 's|^src/||;s|^vendor/src/||' | xargs dirname 2>/dev/null | sort -u)

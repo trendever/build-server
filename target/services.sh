@@ -21,10 +21,10 @@ fi
 if [ "$SERVICE" != "services" ]; then
 	need_rebuild="$SERVICE"
 else
-	if [ "$COMMAND" == 'deploy' ] || [ "$4" == 'force' ]; then
+	if [ "$COMMAND" == 'deploy' ] || [ "$4" == 'all' ]; then
 		need_rebuild=$(cat $WD/services.conf)
 	else
-		need_rebuild="$(bash "$WD/services.sh")"
+		need_rebuild="$(bash "$WD/services.sh" $4)"
 	fi
 fi
 
