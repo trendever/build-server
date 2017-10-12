@@ -12,10 +12,6 @@ fi
 
 changed=$(git diff --name-only $from -- | grep -e ^src -e ^vendor | grep '.go$' | sed -e 's|^src/||;s|^vendor/src/||' | xargs dirname 2>/dev/null | sort -u)
 
-if [ -z "$changed" ]; then
-	exit 0
-fi
-
 gitroot=$PWD
 for sub in $(git submodule | awk '{print $2}' | grep -e ^src -e ^vendor); do
 	prefix=$(echo -n $sub | sed -e 's|^src/||;s|^vendor/src/||')
@@ -25,6 +21,10 @@ for sub in $(git submodule | awk '{print $2}' | grep -e ^src -e ^vendor); do
 	changed+=$(git diff --name-only $subfrom -- | grep '.go$' | sed -e "s/^/$prefix\//" | xargs dirname 2>/dev/null | sort -u)
 	cd $gitroot
 done
+
+if [ -z "$changed" ]; then
+	exit 0
+fi
 
 services=$(cat "$WD/services.conf")
 
