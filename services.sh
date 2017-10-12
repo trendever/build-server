@@ -28,7 +28,7 @@ fi
 
 services=$(cat "$WD/services.conf")
 
-readarray -t deps <<< $(docker run --rm -v "$PWD":/usr/src/services -w "/usr/src/services/" -u $(id -u) desertbit/golang-gb:alpine sh -c "GOPATH=\$GOPATH:\$PWD:\$PWD/vendor go list -f $'{{.ImportPath}}{{range .Deps}} {{.}}{{end}}' `echo $services`")
+readarray -t deps < <(docker run --rm -v "$PWD":/usr/src/services -w "/usr/src/services/" -u $(id -u) desertbit/golang-gb:alpine sh -c "GOPATH=\$GOPATH:\$PWD:\$PWD/vendor go list -f $'{{.ImportPath}}{{range .Deps}} {{.}}{{end}}' `echo $services`")
 for list in "${deps[@]}"; do
 	read service _ <<< $list
 	req=$(comm -12 <(printf -- '%s\n' $list | sort -u) <(printf -- '%s\n' $changed | sort -u))
