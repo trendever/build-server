@@ -21,8 +21,8 @@ fi
 if [ "$SERVICE" != "services" ]; then
 	need_rebuild="$SERVICE"
 else
-	if [ "$COMMAND" == 'deploy' ]; then
-		need_rebuild=$(cat $WD/services.conf | tr -d '^')
+	if [ "$COMMAND" == 'deploy' ] || [ "$4" == 'force' ]; then
+		need_rebuild=$(cat $WD/services.conf)
 	else
 		need_rebuild="$(bash "$WD/services.sh")"
 	fi
@@ -36,7 +36,7 @@ else
 fi
 
 for SERVICE in $need_rebuild; do
-	bash -ex $WD/buildservices.sh "$1" "$SERVICE" "$3"
+	bash -ex $WD/buildservices.sh "$COMMAND" "$SERVICE" "$BRANCH"
 done
 
 # when done, save commit
