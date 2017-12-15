@@ -1,0 +1,6 @@
+#branchname_servicename         docker-machine-host     docker-compose directory                auto-deploy?
+
+# Dev
+dev_api                         trendever-dev           ../devops/docker/dev.cyptobot                   true
+dev_core                        trendever-dev           ../devops/docker/dev.cyptobot                   true
+dev_telegram                    trendever-dev           ../devops/docker/dev.cyptobot                   true

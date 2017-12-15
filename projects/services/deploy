@@ -1,0 +1,43 @@
+#branchname_servicename         docker-machine-host     docker-compose directory                auto-deploy?
+
+# Dev
+dev_accountstore                trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_api                         trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_auth                        trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_chat                        trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_checker                     trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_core                        trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_core                        trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_elasticsync                 trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_fetcher                     trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_mail                        trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_mandible                    trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_payments                    trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_push                        trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_savetrend                   trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_sms                         trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_telebot                     trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_trendcoin                   trendever-dev           ../devops/docker/dev.trendever.com              true
+dev_wantit                      trendever-dev           ../devops/docker/dev.trendever.com              true
+
+# Bot (fetcher-only)
+master_fetcher                  trendever-bot           ../devops/docker/bot.trendever.com              false
+
+# Live1
+master_accountstore             trendever-live1         ../devops/docker/trendever.com                  false 
+master_api                      trendever-live1         ../devops/docker/trendever.com                  false
+master_auth                     trendever-live1         ../devops/docker/trendever.com                  false
+master_chat                     trendever-live1         ../devops/docker/trendever.com                  false
+master_checker                  trendever-live1         ../devops/docker/trendever.com                  false
+master_core                     trendever-live1         ../devops/docker/trendever.com                  false
+master_core                     trendever-live1         ../devops/docker/trendever.com                  false
+master_elasticsync              trendever-live1         ../devops/docker/trendever.com                  false
+master_mail                     trendever-live1         ../devops/docker/trendever.com                  false
+master_mandible                 trendever-live1         ../devops/docker/trendever.com                  false
+master_payments                 trendever-live1         ../devops/docker/trendever.com                  false
+master_push                     trendever-live1         ../devops/docker/trendever.com                  false
+master_savetrend                trendever-live1         ../devops/docker/trendever.com                  false
+master_sms                      trendever-live1         ../devops/docker/trendever.com                  false
+master_telebot                  trendever-live1         ../devops/docker/trendever.com                  false
+master_trendcoin                trendever-live1         ../devops/docker/trendever.com                  false
+master_wantit                   trendever-live1         ../devops/docker/trendever.com                  false

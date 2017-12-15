@@ -1,45 +1,47 @@
 #!/bin/bash
 
-REGISTRY="dev.trendever.com:5000"
-SERVICE="$2"
-BRANCH="$3"
-COMMAND="$1"
+PROJECT="$1"
+COMMAND="$2"
+SERVICE="$3"
+BRANCH="$4"
 
 # docker registry
-SERVICES="$WD/branches.conf"
+REGISTRY="dev.trendever.com:5000"
+# deploy config
+DEPLOY="$WD/projects/$PROJECT/deploy"
+# docker image name
 RES="${BRANCH}_${SERVICE}"
 
-echo "Starting $COMMAND $BRANCH_$SERVICE"
+echo "Starting $COMMAND $RES"
 
 # build it
 if [ "$COMMAND" != "deploy" ]; then
-
 	# build itself
 	# @TODO: gb test
-	docker run --rm -v "$PWD/services":/project -u $(id -u) desertbit/golang-gb:alpine /bin/sh -c "cd src/$SERVICE && gb build"
+	docker run --rm -v "$PWD/$PROJECT":/project -u $(id -u) desertbit/golang-gb:alpine /bin/sh -c "cd src/$SERVICE && gb build"
 
 	rm -rf 'container'
 	mkdir 'container'
 
-	cp "services/bin/$SERVICE" 'container/service'
+	cp "$PROJECT/bin/$SERVICE" 'container/service'
 
-	if [ -f "services/scripts/start-$SERVICE.sh" ]; then
-		cp services/scripts/start-$SERVICE.sh container/start.sh
+	if [ -f "$PROJECT/scripts/start-$SERVICE.sh" ]; then
+		cp "$PROJECT/scripts/start-$SERVICE.sh" "container/start.sh"
 	fi
 
-	if [ -f "services/scripts/deploy/$SERVICE.sh" ]; then
-		(cd services; sh ./scripts/deploy/$SERVICE.sh ./../container)
+	if [ -f "$PROJECT/scripts/deploy/$SERVICE.sh" ]; then
+		(cd "$PROJECT"; sh "./scripts/deploy/$SERVICE.sh" "../container")
 	fi
 
 	# build && push output container
 	cp "$WD/Dockerfile" .
 	docker build -t "$RES" .
-	docker tag "$RES" "$REGISTRY/$RES"
-	docker push "$REGISTRY/$RES"
+	docker tag "$RES" "$REGISTRY/$PROJECT/$RES"
+	docker push "$REGISTRY/$PROJECT/$RES"
 fi
 
 # deploy it
-cat "$SERVICES" | grep -P "^$RES[ \t]" | while read machine_info; do
+cat "$DEPLOY" | grep -P "^$RES[ \t]" | while read machine_info; do
 
 	# read conf string
 	read _ machine compose deploy <<< ${machine_info}
@@ -62,7 +64,7 @@ cat "$SERVICES" | grep -P "^$RES[ \t]" | while read machine_info; do
 
 	cd "$WD"
 	cd "$compose"
-	docker pull "$REGISTRY/$RES"
+	docker pull "$REGISTRY/$PROJECT/$RES"
 
 	docker-compose up -d --force-recreate "$SERVICE"
 done
