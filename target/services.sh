@@ -15,7 +15,7 @@ IFS='/' read -r PROJECT TARGET <<< "$2"
 if [ -z "$TARGET" ]; then
 	TARGET=$PROJECT
 	if [ ! -f "$WD/projects/$PROJECT" ]; then
-		PROJECT=$(basename $0)
+		PROJECT=$(basename $0 .sh)
 	fi
 fi
 
@@ -51,4 +51,5 @@ done
 cd "$PROJECT"
 head=$(git rev-parse HEAD)
 branch=$(basename $(git rev-parse --abbrev-ref HEAD))
+mkdir -p "$WD/lasts/$PROJECT"
 echo "$head" > "$WD/lasts/"$PROJECT"/${branch}"
