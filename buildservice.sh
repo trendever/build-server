@@ -66,5 +66,5 @@ cat "$DEPLOY" | grep -P "^$RES[ \t]" | while read machine_info; do
 	cd "$compose"
 	docker pull "$REGISTRY/$PROJECT/$RES"
 
-	docker-compose up -d --force-recreate "$SERVICE"
+	docker-compose up -d --no-deps --force-recreate "$SERVICE"
 done
