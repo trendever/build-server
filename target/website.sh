@@ -9,7 +9,7 @@ case "$2 $3" in
 	"website master")
 		WHERE=$HOME/trendever_master
 		FROM=dist
-		TO=live@trendever.com:/home/live/public
+		TO=trendever@beta.trendever.com:/home/trendever/www/trendever
 		;;
 	"website directbot")
 		WHERE=$HOME/dev_directbot
@@ -19,7 +19,7 @@ case "$2 $3" in
 	"website directbotprod")
 		WHERE=$HOME/directbot_master
 		FROM=dist
-		TO=live@trendever.com:/home/live/directbot_public
+		TO=trendever@beta.trendever.com:/home/trendever/www/directbot
 		;;
 	"website trusty")
 		WHERE=$HOME/trusty_dev
