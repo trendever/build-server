@@ -13,7 +13,6 @@ dev_fetcher                     trendever-dev           ../devops/docker/dev.tre
 dev_mail                        trendever-dev           ../devops/docker/dev.trendever.com              true
 dev_mandible                    trendever-dev           ../devops/docker/dev.trendever.com              true
 dev_payments                    trendever-dev           ../devops/docker/dev.trendever.com              true
-dev_push                        trendever-dev           ../devops/docker/dev.trendever.com              true
 dev_savetrend                   trendever-dev           ../devops/docker/dev.trendever.com              true
 dev_sms                         trendever-dev           ../devops/docker/dev.trendever.com              true
 dev_telebot                     trendever-dev           ../devops/docker/dev.trendever.com              true
@@ -35,7 +34,6 @@ master_elasticsync              trendever-beta          ../devops/docker/trendev
 master_mail                     trendever-beta          ../devops/docker/trendever.com                  false
 master_mandible                 trendever-beta          ../devops/docker/trendever.com                  false
 master_payments                 trendever-beta          ../devops/docker/trendever.com                  false
-master_push                     trendever-beta          ../devops/docker/trendever.com                  false
 master_savetrend                trendever-beta          ../devops/docker/trendever.com                  false
 master_sms                      trendever-beta          ../devops/docker/trendever.com                  false
 master_telebot                  trendever-beta          ../devops/docker/trendever.com                  false
