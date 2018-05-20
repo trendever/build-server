@@ -19,10 +19,7 @@ dev_telebot                     trendever-dev           ../devops/docker/dev.tre
 dev_trendcoin                   trendever-dev           ../devops/docker/dev.trendever.com              true
 dev_wantit                      trendever-dev           ../devops/docker/dev.trendever.com              true
 
-# Bot (fetcher-only)
-master_fetcher                  trendever-bot           ../devops/docker/bot.trendever.com              false
-
-# Live1
+# Live
 master_accountstore             trendever-beta          ../devops/docker/trendever.com                  false
 master_api                      trendever-beta          ../devops/docker/trendever.com                  false
 master_auth                     trendever-beta          ../devops/docker/trendever.com                  false
@@ -39,3 +36,4 @@ master_sms                      trendever-beta          ../devops/docker/trendev
 master_telebot                  trendever-beta          ../devops/docker/trendever.com                  false
 master_trendcoin                trendever-beta          ../devops/docker/trendever.com                  false
 master_wantit                   trendever-beta          ../devops/docker/trendever.com                  false
+master_fetcher                  trendever-beta          ../devops/docker/trendever.com                  false
