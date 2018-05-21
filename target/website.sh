@@ -2,32 +2,32 @@
 
 case "$2 $3" in
 	"website dev")
-		WHERE=$HOME/trendever_website
+		WHERE=trendever_website
 		FROM=dist
 		TO=$HOME/publicdir/website
 		;;
 	"website master")
-		WHERE=$HOME/trendever_master
+		WHERE=trendever_master
 		FROM=dist
 		TO=trendever@beta.trendever.com:/home/trendever/www/trendever
 		;;
 	"website directbot")
-		WHERE=$HOME/dev_directbot
+		WHERE=dev_directbot
 		FROM=dist
 		TO=$HOME/publicdir/directbot
 		;;
 	"website directbotprod")
-		WHERE=$HOME/directbot_master
+		WHERE=directbot_master
 		FROM=dist
 		TO=trendever@beta.trendever.com:/home/trendever/www/directbot
 		;;
 	"website trusty")
-		WHERE=$HOME/trusty_dev
+		WHERE=trusty_dev
 		FROM=build/dist
 		TO=$HOME/publicdir/trusty_dev
 		;;
 	"soso_test master")
-		WHERE=$HOME/soso_test
+		WHERE=soso_test
 		FROM=dist
 		TO=$HOME/publicdir/soso_test
 		;;
@@ -37,7 +37,7 @@ case "$2 $3" in
 		;;
 esac
 
-cd $WHERE
+cd $HOME/websrc/$WHERE
 git pull
 npm install # do we need it?
 npm run build
