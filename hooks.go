@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/phayes/hookserve/hookserve"
-	"github.com/tucnak/telebot"
+	"gopkg.in/tucnak/telebot.v1"
 	"log"
 	"os"
 	"os/exec"
